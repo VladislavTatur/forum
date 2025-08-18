@@ -1,4 +1,4 @@
-import type {User} from "../../store/slices/users/usersSliceType.ts";
+import type {User} from "../types/usersSliceType.ts";
 
 export const USER_KEY = 'currentUser';
 

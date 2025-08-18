@@ -1,5 +1,5 @@
 import {baseApi} from "./baseApi";
-import type {User} from "../slices/users/usersSliceType.ts";
+import type {User} from "../../shared/types/usersSliceType.ts";
 
 export const userApi = baseApi.injectEndpoints({
     endpoints: (build) => ({

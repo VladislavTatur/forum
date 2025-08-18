@@ -1,8 +1,5 @@
 import {createSlice, type PayloadAction} from "@reduxjs/toolkit";
-import type {User} from "./usersSliceType.ts";
-
-
-
+import type {User} from "../../../shared/types/usersSliceType.ts";
 
 export const initialState: User[] = []
 

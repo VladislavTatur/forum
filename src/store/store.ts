@@ -1,11 +1,14 @@
 import {configureStore} from '@reduxjs/toolkit'
 import {type TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {usersSlice} from "./slices/users/usersSlice";
 import {userApi} from "./api/userApi";
+import {postsSlice} from "./slices/posts/postsSlice.ts";
+import {commentsSlice} from "./slices/comments/commentsSlice.ts";
 
 export const store = configureStore({
     reducer: {
-        user: usersSlice.reducer,
+        favoritePosts: postsSlice.reducer,
+        comments: commentsSlice.reducer,
+
 
         [userApi.reducerPath]: userApi.reducer,
     }, middleware: (getDefaultMiddleware) =>

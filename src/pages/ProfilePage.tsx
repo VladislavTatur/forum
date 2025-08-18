@@ -5,8 +5,8 @@ export const ProfilePage = () => {
     const user = getUserFromStorage()
 
     return (
-        <div>
+        <>
             {user && <MainUser user={user} />}
-        </div>
+        </>
     )
 }

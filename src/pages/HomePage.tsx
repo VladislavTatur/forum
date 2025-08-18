@@ -1,11 +1,12 @@
-import {Posts} from "../shared/components/Posts.tsx";
+import {Posts} from "../shared/components/post/Posts.tsx";
+import {Card} from "../shared/components/Card.tsx";
 
 
 export const HomePage = () => {
 
     return (
-        <div>
+        <Card>
         <Posts/>
-        </div>
+        </Card>
     )
 }

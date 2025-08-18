@@ -1,13 +1,20 @@
-import {AppBar, Toolbar} from "@mui/material";
-import {NavButton} from "./NavButton.tsx";
-import {Path} from "../routers/routes.tsx";
+import {AppBar, Toolbar, Typography} from "@mui/material";
+import {FilteringPosts} from "./post/FilteringPosts.tsx";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {NavLink} from "react-router-dom";
+import {ROUTES} from "../routers/routes.tsx";
 
 export const Header = () => {
     return (
-        <AppBar position="static" sx={{mb: "30px", backgroundColor: 'grey'}}>
-            <Toolbar sx={{display: "flex", gap: "16px"}}>
-                <NavButton to={Path.profile} title={"Профиль"}/>
-                <NavButton to={Path.home} title={"На главную"}/>
+        <AppBar position="sticky" sx={{mb: "30px", backgroundColor: 'white'}}>
+            <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
+                <NavLink to={ROUTES.home}>
+                    <Typography variant='h5'>FORUM</Typography>
+                </NavLink>
+                <FilteringPosts/>
+                <NavLink to={ROUTES.profile}>
+                    <AccountCircleIcon sx={{width: '35px', height: '35px'}}/>
+                </NavLink>
             </Toolbar>
         </AppBar>
     )
