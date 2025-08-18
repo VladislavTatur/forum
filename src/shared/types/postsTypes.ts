@@ -4,3 +4,5 @@ export type PostResponse = {
   title: string;
   body: string;
 };
+
+export type PostRequest = Omit<PostResponse, 'id'>;

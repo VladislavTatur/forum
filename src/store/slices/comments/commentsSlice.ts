@@ -1,23 +1,28 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { Comment } from '@shared/types/commentsType.ts';
+import type { Comment, ServerCommentsCountType } from '@shared/types/commentsType.ts';
 
 type CommentsInitialState = {
-  data: Comment[];
+  serverCommentsCount: ServerCommentsCountType[];
+  localComments: Comment[];
 };
 
 const initialState: CommentsInitialState = {
-  data: [],
+  serverCommentsCount: [],
+  localComments: [],
 };
 
 export const commentsSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    addComment: (state, { payload }: PayloadAction<Comment[]>) => {
-      state.data = payload;
+    setCommentsCount: (state, { payload }: PayloadAction<ServerCommentsCountType>) => {
+      state.serverCommentsCount.push(payload);
+    },
+    addComment: (state, { payload }: PayloadAction<Comment>) => {
+      state.localComments.unshift(payload);
     },
   },
 });
 
-export const { addComment } = commentsSlice.actions;
+export const { setCommentsCount, addComment } = commentsSlice.actions;

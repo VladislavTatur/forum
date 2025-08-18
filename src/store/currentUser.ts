@@ -1,5 +1,5 @@
 export const currentUser = {
-  id: 1,
+  id: new Date().getTime(),
   name: 'Leanne Graham',
   username: 'Bret',
   email: 'Sincere@april.biz',

@@ -5,3 +5,8 @@ export type Comment = {
   email: string;
   body: string;
 };
+
+export type ServerCommentsCountType = {
+  postId: number;
+  count: number;
+};

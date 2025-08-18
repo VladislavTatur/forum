@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -7,16 +7,20 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { IconButton } from '@mui/material';
 
 import { useGetPostCommentsQuery } from '@store/api/postsApi.ts';
+import { setCommentsCount } from '@store/slices/comments/commentsSlice.ts';
 import { toggleDislike, toggleFavorite, toggleLike } from '@store/slices/posts/postsSlice.ts';
 import { useAppDispatch, useAppSelector } from '@store/store.ts';
 
 import { Comments } from '../comments/Comments.tsx';
 
 export const PostActions = ({ postId }: { postId: number }) => {
-  const { data: postComments } = useGetPostCommentsQuery(postId);
-  const posts = useAppSelector((state) => state.favoritePosts);
   const dispatch = useAppDispatch();
+  const { data: postComments } = useGetPostCommentsQuery(postId);
+  const posts = useAppSelector((state) => state.postsSlice);
+  const localComments = useAppSelector((state) => state.comments.localComments);
+  const serverCommentsCount = useAppSelector((state) => state.comments.serverCommentsCount);
   const [open, setOpen] = useState(false);
+  const serverCount = serverCommentsCount.filter((comment) => comment.postId === postId);
 
   const handleClick = (type: 'favorite' | 'like' | 'dislike') => {
     switch (type) {
@@ -31,9 +35,17 @@ export const PostActions = ({ postId }: { postId: number }) => {
     }
   };
 
-  const post = posts.find((post) => post.idPost === postId);
+  useEffect(() => {
+    if (postComments) {
+      dispatch(setCommentsCount({ postId, count: postComments?.length }));
+    }
+  }, [dispatch, postComments, postId]);
 
-  const count = postComments?.length ?? 0;
+  const post = posts.reactions.find((post) => post.idPost === postId);
+
+  // const serverCount = postComments?.length ?? 0;
+  const localCount = localComments.filter((comment) => comment.postId === postId).length ?? 0;
+  const sumCount = serverCount[0]?.count + localCount;
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -41,7 +53,7 @@ export const PostActions = ({ postId }: { postId: number }) => {
         <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)}>
           <ChatBubbleOutlineIcon />
         </IconButton>
-        <p>{count}</p>
+        <p>{sumCount || 0}</p>
         {open && <Comments isOpen={open} setIsOpen={setOpen} postId={postId} />}
       </div>
       <div style={{ display: 'flex', alignItems: 'center' }}>

@@ -1,9 +1,9 @@
 type CommentProps = {
-  name: string;
+  email: string;
   body: string;
 };
 
-export const Comment = ({ body, name }: CommentProps) => {
+export const Comment = ({ body, email }: CommentProps) => {
   return (
     <div
       style={{
@@ -13,8 +13,8 @@ export const Comment = ({ body, name }: CommentProps) => {
         padding: '5px 20px',
       }}
     >
-      <p style={{ fontWeight: 600 }}>{name}</p>
-      <p style={{ fontSize: 14 }}>{body}</p>
+      <p style={{ fontWeight: 600 }}>{email}</p>
+      <p style={{ fontSize: 14, paddingLeft: 15 }}>{body}</p>
     </div>
   );
 };

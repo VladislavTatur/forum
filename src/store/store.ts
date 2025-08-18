@@ -7,7 +7,7 @@ import { postsSlice } from './slices/posts/postsSlice.ts';
 
 export const store = configureStore({
   reducer: {
-    favoritePosts: postsSlice.reducer,
+    postsSlice: postsSlice.reducer,
     comments: commentsSlice.reducer,
 
     [userApi.reducerPath]: userApi.reducer,

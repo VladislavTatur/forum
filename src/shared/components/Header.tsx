@@ -2,7 +2,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-import { FilteringPosts } from './post/FilteringPosts.tsx';
+import { FilteringPosts } from '@features/post/FilteringPosts.tsx';
 
 import { ROUTES } from '../routers/routes.tsx';
 

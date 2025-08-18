@@ -1,11 +1,14 @@
 import { baseApi } from './baseApi';
 import type { Comment } from '@shared/types/commentsType.ts';
-import type { PostResponse } from '@shared/types/postsTypes.ts';
+import type { PostRequest, PostResponse } from '@shared/types/postsTypes.ts';
 
 export const postsApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
-    getPosts: build.query<PostResponse[], string>({
+    getPosts: build.query<PostResponse[], number>({
       query: (start) => `posts?_limit=10&_start=${start}`,
+    }),
+    getAllPosts: build.query<PostResponse[], void>({
+      query: () => `posts`,
     }),
     getPostById: build.query<PostResponse, number>({
       query: (id) => `posts/${id}`,
@@ -13,7 +16,20 @@ export const postsApi = baseApi.injectEndpoints({
     getPostComments: build.query<Comment[], number>({
       query: (postId) => `posts/${postId}/comments`,
     }),
+    createPost: build.mutation<PostResponse, PostRequest>({
+      query: (newPost: PostRequest) => ({
+        url: 'posts',
+        method: 'POST',
+        body: newPost,
+      }),
+    }),
   }),
 });
 
-export const { useGetPostsQuery, useGetPostByIdQuery, useGetPostCommentsQuery } = postsApi;
+export const {
+  useGetPostsQuery,
+  useGetPostByIdQuery,
+  useGetPostCommentsQuery,
+  useCreatePostMutation,
+  useGetAllPostsQuery,
+} = postsApi;

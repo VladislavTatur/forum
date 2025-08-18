@@ -1,24 +1,34 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-type InitialStateType = {
+import { PostResponse } from '@shared/types/postsTypes.ts';
+
+type Reaction = {
   idPost: number;
   like: boolean;
   dislike: boolean;
   isFavorite: boolean;
 };
 
-export const initialState: InitialStateType[] = [];
+type InitialStateType = {
+  reactions: Reaction[];
+  posts: PostResponse[];
+};
+
+export const initialState: InitialStateType = {
+  reactions: [],
+  posts: [],
+};
 
 export const postsSlice = createSlice({
   name: 'postsState',
   initialState,
   reducers: {
     toggleFavorite: (state, action: PayloadAction<number>) => {
-      const post = state.find((p) => p.idPost === action.payload);
+      const post = state.reactions.find((p) => p.idPost === action.payload);
       if (post) {
         post.isFavorite = !post.isFavorite;
       } else {
-        state.push({
+        state.reactions.push({
           idPost: action.payload,
           like: false,
           dislike: false,
@@ -27,12 +37,12 @@ export const postsSlice = createSlice({
       }
     },
     toggleLike: (state, action: PayloadAction<number>) => {
-      const post = state.find((p) => p.idPost === action.payload);
+      const post = state.reactions.find((p) => p.idPost === action.payload);
       if (post) {
         post.like = true;
         if (post.like) post.dislike = false;
       } else {
-        state.push({
+        state.reactions.push({
           idPost: action.payload,
           like: true,
           dislike: false,
@@ -41,12 +51,12 @@ export const postsSlice = createSlice({
       }
     },
     toggleDislike: (state, action: PayloadAction<number>) => {
-      const post = state.find((p) => p.idPost === action.payload);
+      const post = state.reactions.find((p) => p.idPost === action.payload);
       if (post) {
         post.dislike = true;
         if (post.dislike) post.like = false;
       } else {
-        state.push({
+        state.reactions.push({
           idPost: action.payload,
           like: false,
           dislike: true,
@@ -54,7 +64,13 @@ export const postsSlice = createSlice({
         });
       }
     },
+    setPosts: (state, action: PayloadAction<PostResponse[]>) => {
+      state.posts = action.payload;
+    },
+    addPost: (state, action: PayloadAction<PostResponse>) => {
+      state.posts.unshift(action.payload);
+    },
   },
 });
 
-export const { toggleFavorite, toggleLike, toggleDislike } = postsSlice.actions;
+export const { toggleFavorite, toggleLike, toggleDislike, addPost, setPosts } = postsSlice.actions;
