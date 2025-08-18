@@ -1,6 +1,6 @@
 export type PostResponse = {
-    userId: number,
-    id: number,
-    title: string,
-    body: string
-}
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};

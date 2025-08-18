@@ -1,23 +1,22 @@
-import {configureStore} from '@reduxjs/toolkit'
-import {type TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {userApi} from "./api/userApi";
-import {postsSlice} from "./slices/posts/postsSlice.ts";
-import {commentsSlice} from "./slices/comments/commentsSlice.ts";
+import { configureStore } from '@reduxjs/toolkit';
+import { type TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
+import { userApi } from './api/userApi';
+import { commentsSlice } from './slices/comments/commentsSlice.ts';
+import { postsSlice } from './slices/posts/postsSlice.ts';
 
 export const store = configureStore({
-    reducer: {
-        favoritePosts: postsSlice.reducer,
-        comments: commentsSlice.reducer,
+  reducer: {
+    favoritePosts: postsSlice.reducer,
+    comments: commentsSlice.reducer,
 
+    [userApi.reducerPath]: userApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userApi.middleware),
+});
 
-        [userApi.reducerPath]: userApi.reducer,
-    }, middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(userApi.middleware)
-})
-
-
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>()
+export const useAppDispatch = (): AppDispatch => useDispatch<AppDispatch>();

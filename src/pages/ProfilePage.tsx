@@ -1,12 +1,8 @@
-import {getUserFromStorage} from "../shared/utils/getUserFromStorage.ts";
-import {MainUser} from "../shared/components/MainUser.tsx";
+import { MainUser } from '../shared/components/MainUser.tsx';
+import { getUserFromStorage } from '../shared/utils/getUserFromStorage.ts';
 
 export const ProfilePage = () => {
-    const user = getUserFromStorage()
+  const user = getUserFromStorage();
 
-    return (
-        <>
-            {user && <MainUser user={user} />}
-        </>
-    )
-}
+  return <>{user && <MainUser user={user} />}</>;
+};

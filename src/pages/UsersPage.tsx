@@ -1,8 +1,5 @@
-import {Card} from "../shared/components/Card.tsx";
+import { Card } from '../shared/components/Card.tsx';
 
 export const UsersPage = () => {
-
-    return (
-        <Card>Users</Card>
-    )
-}
+  return <Card>Users</Card>;
+};

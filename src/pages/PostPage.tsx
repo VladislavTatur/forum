@@ -1,6 +1,3 @@
 export const PostPage = () => {
-
-    return (
-        <div>Post Page</div>
-    )
-}
+  return <div>Post Page</div>;
+};
