@@ -1,51 +1,51 @@
+import { useState } from 'react';
+
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, IconButton, Typography } from '@mui/material';
+
 import { Card } from './Card.tsx';
-import { EditableSpan } from './EditableSpan.tsx';
+import { User } from './users/User.tsx';
+import { UserForm } from '@shared/components/users/UserForm.tsx';
+import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
+import { saveUserToStorage } from '@shared/utils/saveUserToStorage.ts';
 
-import type { User } from '../types/usersSliceType.ts';
-import { saveUserToStorage } from '../utils/saveUserToStorage.ts';
+import type { UserType } from '../types/usersType.ts';
 
-type MainUserProps = {
-  user: User;
-};
+export const MainUser = () => {
+  const [isOpenSetting, setIsOpenSetting] = useState(false);
+  const user = getUserFromStorage();
 
-export const MainUser = ({ user }: MainUserProps) => {
-  // TODO: Заменить на реакт хук форм
-  const fields = [
-    { key: 'name', value: user.name, path: ['name'] },
-    { key: 'email', value: user.email, path: ['email'] },
-    { key: 'website', value: user.website, path: ['website'] },
-    { key: 'city', value: user.address?.city, path: ['address', 'city'] },
-    { key: 'company name', value: user.company?.name, path: ['company', 'name'] },
-    { key: 'phone', value: user.phone, path: ['phone'] },
-  ];
-
-  const handleChange = (path: (string | number)[], newValue: string) => {
-    const updatedUser = { ...user };
-
-    // рекурсивная функция для установки значения по пути
-    let current: any = updatedUser;
-    for (let i = 0; i < path.length - 1; i++) {
-      const key = path[i];
-      if (!current[key]) current[key] = {};
-      current = current[key];
-    }
-    current[path[path.length - 1]] = newValue;
-
+  const onSaveHandler = (updatedUser: UserType) => {
     saveUserToStorage(updatedUser);
+    setIsOpenSetting((prev) => !prev);
+  };
+
+  const onCancelHandler = () => {
+    setIsOpenSetting((prev) => !prev);
   };
 
   return (
     <Card>
-      {user &&
-        fields.map((field, index) => (
-          <div key={index} style={{ padding: '0 20px 20px 20px' }}>
-            {`${field.key}: `}
-            <EditableSpan
-              title={field.value ?? ''}
-              changeTitle={(newTitle) => handleChange(field.path, newTitle)}
-            />
-          </div>
-        ))}
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Typography variant="h5" p={2.5}>
+          {isOpenSetting ? 'Редактирование профиля' : 'Профиль'}
+        </Typography>
+        <IconButton
+          sx={{ width: '35px', height: '35px' }}
+          onClick={() => setIsOpenSetting((prev) => !prev)}
+        >
+          <SettingsIcon />
+        </IconButton>
+      </Box>
+      {!isOpenSetting ? (
+        <User user={user} />
+      ) : (
+        <UserForm
+          user={user}
+          onCancel={onCancelHandler}
+          onSave={(update) => onSaveHandler(update)}
+        />
+      )}
     </Card>
   );
 };

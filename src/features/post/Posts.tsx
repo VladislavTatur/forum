@@ -1,43 +1,54 @@
-import { useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 
-import { Button, Typography } from '@mui/material';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
+import { Box, Button, Tab, Typography } from '@mui/material';
 
-import { Post } from './Post.tsx';
+import { PostsList } from '@features/comments/PostsList.tsx';
+import { FilteringPosts } from '@features/post/FilteringPosts.tsx';
 import { CreatePostModal } from '@shared/components/CreatePostModal.tsx';
-import type { PostResponse } from '@shared/types/postsTypes.ts';
 import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
 import { useGetPostsQuery } from '@store/api/postsApi.ts';
 import { useGetUsersQuery } from '@store/api/userApi.ts';
+import { selectLocalPosts, selectReactionsPost } from '@store/selectors/posts.ts';
 import { setPosts } from '@store/slices/posts/postsSlice.ts';
-import { useAppDispatch, useAppSelector } from '@store/store.ts';
+import { useAppDispatch } from '@store/store.ts';
 
 export const Posts = () => {
   const [nextScroll, setNextScroll] = useState(0);
-  const [statePosts, setStatePosts] = useState<PostResponse[]>([]);
   const [isOpenCreatePostModal, setIsOpenCreatePostModal] = useState(false);
   const { data: posts } = useGetPostsQuery(nextScroll);
   const { data: users } = useGetUsersQuery();
-  const localPosts = useAppSelector((state) => state.postsSlice.posts);
+  const localPosts = selectLocalPosts();
+  const reactionsPost = selectReactionsPost();
   const localUser = getUserFromStorage();
   const dispatch = useAppDispatch();
   const allUsers = users && [...users, localUser];
   const POSTS_LIMIT = 10;
 
+  const [value, setValue] = useState('Все');
+
+  const favoritePosts = localPosts.filter((lPost) =>
+    reactionsPost.some((rPost) => rPost.idPost === lPost.id && rPost.isFavorite)
+  );
+
+  const handleChange = (_: SyntheticEvent, newValue: string) => {
+    setValue(newValue);
+  };
+
   useEffect(() => {
     if (posts?.length) {
-      const newPosts = posts.filter((post) => !statePosts.some((p) => p.id === post.id));
+      const newPosts = posts.filter((post) => !localPosts.some((p) => p.id === post.id));
       if (newPosts.length) {
-        setStatePosts((prev) => [...prev, ...newPosts]);
         dispatch(setPosts([...localPosts, ...newPosts]));
       }
     }
-  }, [posts, statePosts, dispatch, localPosts]);
+  }, [posts, dispatch, localPosts]);
 
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
-        <Typography variant="h6">Posts</Typography>
+        <Typography variant="h5">Посты</Typography>
+        <FilteringPosts users={users} />
         <Button
           variant="contained"
           size="small"
@@ -47,32 +58,27 @@ export const Posts = () => {
         </Button>
         <CreatePostModal isOpen={isOpenCreatePostModal} setIsOpen={setIsOpenCreatePostModal} />
       </div>
-      {/*<Tabs>*/}
-      {/*    <Tab label='Все' value='1'/>*/}
-      {/*    <Tab label='Избранное' value='2'/>*/}
-      {/*</Tabs>*/}
-      <InfiniteScroll
-        next={() => setNextScroll((prevState) => prevState + POSTS_LIMIT)}
-        hasMore={(posts?.length || 0) === POSTS_LIMIT}
-        loader={<h4>Loading...</h4>}
-        dataLength={statePosts.length}
-      >
-        <div style={{ border: '1px solid gray', margin: '10px', borderRadius: '5px' }}>
-          {localPosts &&
-            localPosts.map((post) => {
-              const user = allUsers?.find((user) => user.id === post.userId);
-              return (
-                <Post
-                  key={post.id}
-                  title={post.title}
-                  body={post.body}
-                  author={user?.name || 'Неизвестный пользователь'}
-                  postId={post.id}
-                />
-              );
-            })}
-        </div>
-      </InfiniteScroll>
+      <Box sx={{ width: '100%', typography: 'body1' }}>
+        <TabContext value={value}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <TabList onChange={handleChange}>
+              <Tab label="Все" value="Все" />
+              <Tab label="Избранное" value="Избранное" />
+            </TabList>
+          </Box>
+          <TabPanel value="Все">
+            <PostsList
+              allUsers={allUsers}
+              posts={localPosts}
+              hasMore={(posts?.length || 0) === POSTS_LIMIT}
+              loadMore={() => setNextScroll((prev) => prev + POSTS_LIMIT)}
+            />
+          </TabPanel>
+          <TabPanel value="Избранное">
+            <PostsList posts={favoritePosts} allUsers={allUsers} />
+          </TabPanel>
+        </TabContext>
+      </Box>
     </>
   );
 };

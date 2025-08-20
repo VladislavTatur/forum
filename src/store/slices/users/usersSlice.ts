@@ -1,14 +1,14 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import type { User } from '@shared/types/usersSliceType.ts';
+import type { UserType } from '@shared/types/usersType.ts';
 
-export const initialState: User[] = [];
+export const initialState: UserType[] = [];
 
 export const usersSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addUsers: (_, action: PayloadAction<User[]>) => {
+    addUsers: (_, action: PayloadAction<UserType[]>) => {
       return action.payload;
     },
   },

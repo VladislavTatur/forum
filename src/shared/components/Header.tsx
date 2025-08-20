@@ -2,8 +2,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppBar, Toolbar, Typography } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
-import { FilteringPosts } from '@features/post/FilteringPosts.tsx';
-
 import { ROUTES } from '../routers/routes.tsx';
 
 export const Header = () => {
@@ -13,7 +11,6 @@ export const Header = () => {
         <NavLink to={ROUTES.home}>
           <Typography variant="h5">FORUM</Typography>
         </NavLink>
-        <FilteringPosts />
         <NavLink to={ROUTES.profile}>
           <AccountCircleIcon sx={{ width: '35px', height: '35px' }} />
         </NavLink>

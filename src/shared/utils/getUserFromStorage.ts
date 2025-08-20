@@ -1,8 +1,8 @@
 import { USER_KEY } from './saveUserToStorage.ts';
 
-import type { User } from '../types/usersSliceType.ts';
+import type { UserType } from '../types/usersType.ts';
 
-export const getUserFromStorage = (): User => {
+export const getUserFromStorage = (): UserType => {
   const userData = localStorage.getItem(USER_KEY);
   if (userData) {
     try {

@@ -7,18 +7,20 @@ import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { IconButton } from '@mui/material';
 
 import { useGetPostCommentsQuery } from '@store/api/postsApi.ts';
+import { selectComments, selectServerCommentsCount } from '@store/selectors/comments.ts';
+import { selectPosts } from '@store/selectors/posts.ts';
 import { setCommentsCount } from '@store/slices/comments/commentsSlice.ts';
 import { toggleDislike, toggleFavorite, toggleLike } from '@store/slices/posts/postsSlice.ts';
-import { useAppDispatch, useAppSelector } from '@store/store.ts';
+import { useAppDispatch } from '@store/store.ts';
 
 import { Comments } from '../comments/Comments.tsx';
 
 export const PostActions = ({ postId }: { postId: number }) => {
   const dispatch = useAppDispatch();
   const { data: postComments } = useGetPostCommentsQuery(postId);
-  const posts = useAppSelector((state) => state.postsSlice);
-  const localComments = useAppSelector((state) => state.comments.localComments);
-  const serverCommentsCount = useAppSelector((state) => state.comments.serverCommentsCount);
+  const posts = selectPosts();
+  const localComments = selectComments();
+  const serverCommentsCount = selectServerCommentsCount();
   const [open, setOpen] = useState(false);
   const serverCount = serverCommentsCount.filter((comment) => comment.postId === postId);
 
@@ -43,7 +45,6 @@ export const PostActions = ({ postId }: { postId: number }) => {
 
   const post = posts.reactions.find((post) => post.idPost === postId);
 
-  // const serverCount = postComments?.length ?? 0;
   const localCount = localComments.filter((comment) => comment.postId === postId).length ?? 0;
   const sumCount = serverCount[0]?.count + localCount;
 

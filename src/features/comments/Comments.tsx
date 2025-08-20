@@ -6,8 +6,9 @@ import { Comment } from './Comment.tsx';
 import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
 import { onPressEnter } from '@shared/utils/onPressEnter.ts';
 import { useGetPostCommentsQuery } from '@store/api/postsApi.ts';
+import { selectComments } from '@store/selectors/comments.ts';
 import { addComment } from '@store/slices/comments/commentsSlice.ts';
-import { useAppDispatch, useAppSelector } from '@store/store.ts';
+import { useAppDispatch } from '@store/store.ts';
 
 type CommentsProps = {
   isOpen: boolean;
@@ -20,7 +21,7 @@ export const Comments = ({ isOpen, setIsOpen, postId }: CommentsProps) => {
   const user = getUserFromStorage();
   const { data: postComments } = useGetPostCommentsQuery(postId);
   const dispatch = useAppDispatch();
-  const localComments = useAppSelector((state) => state.comments.localComments);
+  const localComments = selectComments();
   const localCommentsToPost = localComments.filter((comment) => comment.postId === postId);
   const comments = postComments ? [...localCommentsToPost, ...postComments] : [];
 
@@ -31,8 +32,8 @@ export const Comments = ({ isOpen, setIsOpen, postId }: CommentsProps) => {
         addComment({
           postId: postId,
           id: new Date().getTime(),
-          name: user?.name || '',
-          email: user?.email || '',
+          name: user?.name,
+          email: user?.email,
           body: commentText,
         })
       );
@@ -40,12 +41,6 @@ export const Comments = ({ isOpen, setIsOpen, postId }: CommentsProps) => {
     setCommentText('');
   };
 
-  // const onPressEnter = (e: KeyboardEvent<HTMLDivElement>) => {
-  //   if (e.key === 'Enter' && !e.shiftKey) {
-  //     e.preventDefault();
-  //     if (commentText.trim()) handleSubmit();
-  //   }
-  // };
   const onPressEnterHandler = onPressEnter(handleSubmit, commentText);
 
   return (

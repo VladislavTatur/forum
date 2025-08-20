@@ -10,7 +10,6 @@ function App() {
   if (!storageUSer) {
     saveUserToStorage(currentUser);
   }
-
   return (
     <>
       <Header />
