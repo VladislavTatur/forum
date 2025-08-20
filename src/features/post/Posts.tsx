@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useState } from 'react';
 
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Button, Tab, Typography } from '@mui/material';
@@ -7,13 +7,14 @@ import { PostsList } from '@features/comments/PostsList.tsx';
 import { FilteringPosts } from '@features/post/FilteringPosts.tsx';
 import { CreatePostModal } from '@shared/components/CreatePostModal.tsx';
 import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
-import { useGetPostsQuery } from '@store/api/postsApi.ts';
+import { useGetPostsQuery, useSearchForUserPostsQuery } from '@store/api/postsApi.ts';
 import { useGetUsersQuery } from '@store/api/userApi.ts';
 import { selectLocalPosts, selectReactionsPost } from '@store/selectors/posts.ts';
 import { setPosts } from '@store/slices/posts/postsSlice.ts';
 import { useAppDispatch } from '@store/store.ts';
 
 export const Posts = () => {
+  const [selectedUserName, setSelectedUserName] = useState<string | null>(null);
   const [nextScroll, setNextScroll] = useState(0);
   const [isOpenCreatePostModal, setIsOpenCreatePostModal] = useState(false);
   const { data: posts } = useGetPostsQuery(nextScroll);
@@ -24,7 +25,10 @@ export const Posts = () => {
   const dispatch = useAppDispatch();
   const allUsers = users && [...users, localUser];
   const POSTS_LIMIT = 10;
-
+  const selectedUser = allUsers?.find((user) => user.name === selectedUserName);
+  const { data: userPosts } = useSearchForUserPostsQuery(selectedUser ? selectedUser.id : 0, {
+    skip: !selectedUser, // запрос выполняется только если есть выбранный пользователь
+  });
   const [value, setValue] = useState('Все');
 
   const favoritePosts = localPosts.filter((lPost) =>
@@ -33,6 +37,17 @@ export const Posts = () => {
 
   const handleChange = (_: SyntheticEvent, newValue: string) => {
     setValue(newValue);
+  };
+
+  const filteredPosts = useMemo(() => {
+    if (!selectedUserName) return localPosts;
+    if (userPosts) return userPosts;
+    return localPosts;
+  }, [selectedUserName, localPosts, userPosts]);
+
+  const filterChangeHandle = (value: string | null) => {
+    if (value) setSelectedUserName(value);
+    else setSelectedUserName(null);
   };
 
   useEffect(() => {
@@ -44,11 +59,21 @@ export const Posts = () => {
     }
   }, [posts, dispatch, localPosts]);
 
+  const hasMore = useMemo(() => {
+    if (!selectedUserName) {
+      return (posts?.length || 0) % POSTS_LIMIT === 0 && posts?.length !== 0;
+    }
+    if (selectedUserName && userPosts) {
+      return false;
+    }
+    return false;
+  }, [selectedUserName, posts, userPosts]);
+
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px' }}>
         <Typography variant="h5">Посты</Typography>
-        <FilteringPosts users={users} />
+        <FilteringPosts users={users || []} onFilterChange={(value) => filterChangeHandle(value)} />
         <Button
           variant="contained"
           size="small"
@@ -69,8 +94,8 @@ export const Posts = () => {
           <TabPanel value="Все">
             <PostsList
               allUsers={allUsers}
-              posts={localPosts}
-              hasMore={(posts?.length || 0) === POSTS_LIMIT}
+              posts={filteredPosts}
+              hasMore={hasMore}
               loadMore={() => setNextScroll((prev) => prev + POSTS_LIMIT)}
             />
           </TabPanel>

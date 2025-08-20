@@ -23,6 +23,9 @@ export const postsApi = baseApi.injectEndpoints({
         body: newPost,
       }),
     }),
+    searchForUserPosts: build.query<PostResponse[], number>({
+      query: (idUser) => `posts/?userId=${idUser}`,
+    }),
   }),
 });
 
@@ -32,4 +35,5 @@ export const {
   useGetPostCommentsQuery,
   useCreatePostMutation,
   useGetAllPostsQuery,
+  useSearchForUserPostsQuery,
 } = postsApi;
