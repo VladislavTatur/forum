@@ -27,9 +27,9 @@ export const CreatePostModal = ({ isOpen, setIsOpen }: CustomModalProps) => {
     try {
       if (user?.id) {
         const res = await createPost({
+          userId: user.id,
           title: titleText,
           body: postText,
-          userId: user.id,
         });
         if (res.data) {
           dispatch(addPost({ ...res.data, id: new Date().getTime() }));

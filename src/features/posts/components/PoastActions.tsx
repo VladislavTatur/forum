@@ -2,25 +2,39 @@ import { useEffect, useState } from 'react';
 
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import { IconButton } from '@mui/material';
 
+import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
 import { useGetPostCommentsQuery } from '@store/api/postsApi.ts';
 import { selectComments, selectServerCommentsCount } from '@store/selectors/comments.ts';
 import { selectPosts } from '@store/selectors/posts.ts';
 import { setCommentsCount } from '@store/slices/comments/commentsSlice.ts';
-import { toggleDislike, toggleFavorite, toggleLike } from '@store/slices/posts/postsSlice.ts';
+import {
+  deletePost,
+  toggleDislike,
+  toggleFavorite,
+  toggleLike,
+} from '@store/slices/posts/postsSlice.ts';
 import { useAppDispatch } from '@store/store.ts';
 
 import { Comments } from '../../comments/Comments.tsx';
 
-export const PostActions = ({ postId }: { postId: number }) => {
+type PostActions = {
+  postId: number;
+  userId?: number;
+};
+
+export const PostActions = ({ postId, userId }: PostActions) => {
   const dispatch = useAppDispatch();
   const { data: postComments } = useGetPostCommentsQuery(postId);
   const posts = selectPosts();
   const localComments = selectComments();
   const serverCommentsCount = selectServerCommentsCount();
+  const myProfile = getUserFromStorage();
+  const myPost = myProfile.id === userId;
   const [open, setOpen] = useState(false);
   const serverCount = serverCommentsCount.filter((comment) => comment.postId === postId);
 
@@ -34,6 +48,12 @@ export const PostActions = ({ postId }: { postId: number }) => {
         return dispatch(toggleDislike(postId));
       default:
         return null;
+    }
+  };
+
+  const handleDeleteMyPost = () => {
+    if (myPost) {
+      dispatch(deletePost(postId));
     }
   };
 
@@ -51,6 +71,11 @@ export const PostActions = ({ postId }: { postId: number }) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
       <div style={{ display: 'flex', gap: '5px' }}>
+        {myPost && (
+          <IconButton onClick={handleDeleteMyPost} color="error">
+            <DeleteOutlineIcon />
+          </IconButton>
+        )}
         <IconButton color="inherit" onClick={() => setOpen((prev) => !prev)}>
           <ChatBubbleOutlineIcon />
         </IconButton>

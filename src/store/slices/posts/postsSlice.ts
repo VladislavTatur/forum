@@ -70,7 +70,11 @@ export const postsSlice = createSlice({
     addPost: (state, action: PayloadAction<PostResponse>) => {
       state.posts.unshift(action.payload);
     },
+    deletePost: (state, action: PayloadAction<number>) => {
+      state.posts = state.posts.filter((p) => p.id !== action.payload);
+    },
   },
 });
 
-export const { toggleFavorite, toggleLike, toggleDislike, addPost, setPosts } = postsSlice.actions;
+export const { toggleFavorite, toggleLike, toggleDislike, addPost, setPosts, deletePost } =
+  postsSlice.actions;

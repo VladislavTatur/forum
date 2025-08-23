@@ -14,8 +14,10 @@ export const FilteringPosts = ({ users, onFilterChange }: FilteringPostsProps) =
     } else onFilterChange(null);
   };
   return (
-    <Stack spacing={2} sx={{ width: 300 }}>
+    <Stack alignItems="center" flex={1}>
       <Autocomplete
+        size="small"
+        sx={{ width: '100%', maxWidth: 400 }}
         onChange={(_, value) => onFilterChangeHandler(value)}
         freeSolo
         options={users.map((user) => user.name)}

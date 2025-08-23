@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Box, IconButton, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 
-import { Card } from './Card.tsx';
 import { User } from './users/User.tsx';
 import { UserForm } from '@shared/components/users/UserForm.tsx';
 import { getUserFromStorage } from '@shared/utils/getUserFromStorage.ts';
@@ -25,8 +24,8 @@ export const MainUser = () => {
   };
 
   return (
-    <Card>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+    <>
+      <Stack flexDirection="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h5" p={2.5}>
           {isOpenSetting ? 'Редактирование профиля' : 'Профиль'}
         </Typography>
@@ -36,9 +35,9 @@ export const MainUser = () => {
         >
           <SettingsIcon />
         </IconButton>
-      </Box>
+      </Stack>
       {!isOpenSetting ? (
-        <User user={user} />
+        <User user={user} myProfile />
       ) : (
         <UserForm
           user={user}
@@ -46,6 +45,6 @@ export const MainUser = () => {
           onSave={(update) => onSaveHandler(update)}
         />
       )}
-    </Card>
+    </>
   );
 };

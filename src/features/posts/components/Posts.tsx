@@ -4,8 +4,8 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Box, Button, Tab, Typography } from '@mui/material';
 import Stack from '@mui/material/Stack';
 
-import { PostsList } from '@features/comments/PostsList.tsx';
 import { FilteringPosts } from '@features/posts/components/FilteringPosts.tsx';
+import { PostsList } from '@features/posts/components/PostsList.tsx';
 import { POSTS_LIMIT } from '@features/posts/constants';
 import { PostsTabs } from '@features/posts/enums';
 import { CreatePostModal } from '@shared/components/CreatePostModal.tsx';
@@ -82,16 +82,24 @@ export const Posts = () => {
 
   return (
     <>
-      <Stack direction="row" gap={1} sx={{ justifyContent: 'space-between', padding: 2.5 }}>
+      <Stack
+        direction="row"
+        gap={1}
+        justifyContent="space-between"
+        alignItems="center"
+        sx={{ padding: 2.5 }}
+      >
         <Typography variant="h5">Посты</Typography>
         <FilteringPosts users={users ?? []} onFilterChange={(value) => filterChangeHandle(value)} />
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => setIsOpenCreatePostModal((prev) => !prev)}
-        >
-          Создать пост
-        </Button>
+        <Box>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => setIsOpenCreatePostModal((prev) => !prev)}
+          >
+            Создать пост
+          </Button>
+        </Box>
         <CreatePostModal isOpen={isOpenCreatePostModal} setIsOpen={setIsOpenCreatePostModal} />
       </Stack>
       <Box sx={{ width: 1 }}>

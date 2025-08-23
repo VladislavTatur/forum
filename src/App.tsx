@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 
 import { Header } from './shared/components/Header.tsx';
@@ -13,10 +14,10 @@ function App() {
   return (
     <>
       <Header />
-      <div style={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex' }}>
         <NavigationBar />
         <Outlet />
-      </div>
+      </Box>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Posts } from '@features/post/Posts.tsx';
+import { Posts } from '@features/posts/components/Posts.tsx';
 
 import { Card } from '../shared/components/Card.tsx';
 
