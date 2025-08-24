@@ -2,7 +2,6 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { HomePage } from '@pages/HomePage.tsx';
 import { PostPage } from '@pages/PostPage.tsx';
-import { PostsPage } from '@pages/PostsPage.tsx';
 import { ProfilePage } from '@pages/ProfilePage.tsx';
 import { UsersPage } from '@pages/UsersPage.tsx';
 
@@ -11,8 +10,7 @@ import App from '../../App';
 export const ROUTES = {
   main: '/',
   home: '/home',
-  post: '/post',
-  posts: '/posts',
+  post: (id: string) => `/posts/${id}`,
   profile: '/profile',
   users: '/users',
 };
@@ -27,16 +25,12 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: ROUTES.post,
+        path: 'posts/:id',
         element: <PostPage />,
       },
       {
         path: ROUTES.profile,
         element: <ProfilePage />,
-      },
-      {
-        path: ROUTES.posts,
-        element: <PostsPage />,
       },
       {
         path: ROUTES.users,

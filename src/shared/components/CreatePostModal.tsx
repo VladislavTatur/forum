@@ -37,7 +37,7 @@ export const CreatePostModal = ({ isOpen, setIsOpen }: CustomModalProps) => {
           setPostText('');
           setTitleText('');
         } else {
-          console.error('Ошибка: post не был создан');
+          console.error('Error: the post was not created');
         }
       }
     } catch (error) {
@@ -51,7 +51,7 @@ export const CreatePostModal = ({ isOpen, setIsOpen }: CustomModalProps) => {
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
           <Typography variant="h6" component="h2">
-            Создание поста
+            Creating a post
           </Typography>
           <TextField
             multiline
@@ -69,7 +69,7 @@ export const CreatePostModal = ({ isOpen, setIsOpen }: CustomModalProps) => {
             minRows={1}
             value={postText}
             onChange={(e) => setPostText(e.target.value)}
-            placeholder="Напишите пост..."
+            placeholder="Write a post..."
             sx={{ mt: 2 }}
             onKeyDown={onPressEnterHandler}
           />

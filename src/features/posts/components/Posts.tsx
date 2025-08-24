@@ -79,7 +79,6 @@ export const Posts = () => {
       }
     }
   }, [posts, dispatch, localPosts]);
-
   return (
     <>
       <Stack
@@ -89,15 +88,11 @@ export const Posts = () => {
         alignItems="center"
         sx={{ padding: 2.5 }}
       >
-        <Typography variant="h5">Посты</Typography>
+        <Typography variant="h5">Posts</Typography>
         <FilteringPosts users={users ?? []} onFilterChange={(value) => filterChangeHandle(value)} />
         <Box>
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => setIsOpenCreatePostModal((prev) => !prev)}
-          >
-            Создать пост
+          <Button variant="contained" onClick={() => setIsOpenCreatePostModal((prev) => !prev)}>
+            Create post
           </Button>
         </Box>
         <CreatePostModal isOpen={isOpenCreatePostModal} setIsOpen={setIsOpenCreatePostModal} />
@@ -106,9 +101,9 @@ export const Posts = () => {
         <TabContext value={activeTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleChange}>
-              <Tab label="Все" value={PostsTabs.All} />
+              <Tab label="All" value={PostsTabs.All} />
               <Tab
-                label="Избранное"
+                label="Favourite"
                 value={PostsTabs.Favorites}
                 disabled={favoritePosts.length === 0}
               />

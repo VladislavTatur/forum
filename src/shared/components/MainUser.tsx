@@ -27,7 +27,7 @@ export const MainUser = () => {
     <>
       <Stack flexDirection="row" alignItems="center" justifyContent="space-between">
         <Typography variant="h5" p={2.5}>
-          {isOpenSetting ? 'Редактирование профиля' : 'Профиль'}
+          {isOpenSetting ? 'Profile Editing' : 'Profile'}
         </Typography>
         <IconButton
           sx={{ width: '35px', height: '35px' }}

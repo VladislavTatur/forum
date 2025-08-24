@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 
 import { ROUTES } from '../routers/routes.tsx';
@@ -21,19 +22,26 @@ const activeLinkStyle = {
 
 export const NavigationBar = () => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '200px', padding: '10px' }}>
+    <Stack
+      width={200}
+      p={1.25}
+      sx={{
+        position: 'sticky',
+        top: 95,
+      }}
+    >
       <NavLink
         to={ROUTES.profile}
         style={({ isActive }) => (isActive ? activeLinkStyle : linkStyle)}
       >
-        Профиль
+        Profile
       </NavLink>
       <NavLink to={ROUTES.home} style={({ isActive }) => (isActive ? activeLinkStyle : linkStyle)}>
-        Посты
+        Posts
       </NavLink>
       <NavLink to={ROUTES.users} style={({ isActive }) => (isActive ? activeLinkStyle : linkStyle)}>
-        Пользователи
+        Users
       </NavLink>
-    </div>
+    </Stack>
   );
 };

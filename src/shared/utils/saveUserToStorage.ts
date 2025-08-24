@@ -6,6 +6,6 @@ export const saveUserToStorage = (user: UserType) => {
   try {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   } catch (error) {
-    console.error('Ошибка сохранения пользователя:', error);
+    console.error('User Save error:', error);
   }
 };

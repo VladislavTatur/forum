@@ -21,7 +21,7 @@ export const FilteringPosts = ({ users, onFilterChange }: FilteringPostsProps) =
         onChange={(_, value) => onFilterChangeHandler(value)}
         freeSolo
         options={users.map((user) => user.name)}
-        renderInput={(params) => <TextField {...params} label="Поиск постов по пользователям..." />}
+        renderInput={(params) => <TextField {...params} label="Search for posts by users..." />}
       />
     </Stack>
   );

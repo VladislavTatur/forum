@@ -7,10 +7,7 @@ export const postsApi = baseApi.injectEndpoints({
     getPosts: build.query<PostResponse[], number>({
       query: (start) => `posts?_limit=10&_start=${start}`,
     }),
-    getAllPosts: build.query<PostResponse[], void>({
-      query: () => `posts`,
-    }),
-    getPostById: build.query<PostResponse, number>({
+    getPostById: build.query<PostResponse, string>({
       query: (id) => `posts/${id}`,
     }),
     getPostComments: build.query<Comment[], number>({
@@ -31,9 +28,9 @@ export const postsApi = baseApi.injectEndpoints({
 
 export const {
   useGetPostsQuery,
+  useLazyGetPostByIdQuery,
   useGetPostByIdQuery,
   useGetPostCommentsQuery,
   useCreatePostMutation,
-  useGetAllPostsQuery,
   useSearchForUserPostsQuery,
 } = postsApi;

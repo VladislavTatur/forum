@@ -116,11 +116,11 @@ export const UserForm = ({ user, onSave, onCancel }: UserFormProps) => {
       />
 
       <Box display="flex" gap={2} mt={2}>
-        <Button variant="contained" onClick={() => onSave(formData)}>
-          Сохранить
+        <Button variant="contained" sx={{ minWidth: '100px' }} onClick={() => onSave(formData)}>
+          Save
         </Button>
-        <Button variant="outlined" onClick={onCancel}>
-          Отмена
+        <Button variant="outlined" sx={{ minWidth: '100px' }} onClick={onCancel}>
+          Cancel
         </Button>
       </Box>
     </Box>

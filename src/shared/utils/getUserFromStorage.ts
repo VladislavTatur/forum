@@ -8,7 +8,7 @@ export const getUserFromStorage = (): UserType => {
     try {
       return JSON.parse(userData);
     } catch (error) {
-      console.error('Ошибка парсинга данных пользователя:', error);
+      console.error('User data parsing error:', error);
     }
   }
   return {
