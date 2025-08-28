@@ -1,69 +1,98 @@
-# React + TypeScript + Vite
+# Forum App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern forum application built with **React**, **Vite**, **TypeScript**, and **MUI**, featuring client-side authentication simulation, post creation, comments, and user management.
 
-Currently, two official plugins are available:
+## Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[https://VladislavTatur.github.io/forum](https://VladislavTatur.github.io/forum)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Posts and comments** with creation, filtering, and pagination.
+- **User management** with profile and settings pages.
+- **Client-side authentication simulation** using `localStorage`.
+- **Routing** with protected and public routes using React Router v7.
+- **State management** with Redux Toolkit and React Redux.
+- **Form handling** using React Hook Form.
+- **UI** built with MUI (Material UI).
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+### Installation
+
+```bash
+git clone https://github.com/VladislavTatur/forum.git
+cd forum
+yarn install
+yarn dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app will run on http://localhost:5173 by default.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Login
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+For authentication simulation, a predefined user is stored in localStorage.
+Use the following credentials to log in:
 ```
+Username: bradF1
+Password: 123456
+```
+>Only authenticated users can create posts, like or dislike it and leave comments.
+
+---
+
+## Tech Stack
+
+- React 19 – frontend library
+- TypeScript 5 – static typing
+- React Router 7 – routing
+- Redux Toolkit & React Redux – state management
+- MUI v7 – UI components and styling
+- React Hook Form – form handling
+- Vite – build tool
+
+### Linting & Formatting
+- ESLint with plugins for React, JSX accessibility, and TypeScript.
+- Prettier for code formatting.
+- Husky & lint-staged for pre-commit hooks:
+```
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
+```
+> Automatically formats and lints code before commit.
+
+### Project Structure
+
+```
+src/
+├─ features/         # Posts, comments, users
+├─ pages/            # App pages (Login, Profile, Posts, etc.)
+├─ shared/           # Shared utils, constants, layouts, components, etc.
+├─ store/            # Redux slices, selectors and store configuration
+├─ App.tsx           # Main app
+└─ main.tsx          # Entry point
+```
+
+## Deployment
+The app is deployed to GitHub Pages:
+
+```
+yarn build
+yarn deploy
+```
+
+### Notes
+
+- Authentication is simulated using localStorage.
+- The app uses lazy loading for route-based code splitting.
+- Protected routes prevent access to profile and settings pages if the user is not authenticated.
+- Comments and post creation are restricted to logged-in users only.
