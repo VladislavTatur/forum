@@ -11,7 +11,7 @@ export const globalStyles = (
         },
         body: {
           height: '100dvh',
-          width: '100dvw',
+          width: '100%',
           fontFamily:
             "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
           backgroundColor: 'rgba(211, 211, 211)',
