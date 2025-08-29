@@ -6,8 +6,8 @@ import TextField from '@mui/material/TextField';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
+import { userFieldConfigs } from '@features/users/constants';
 import { ROUTES } from '@shared/constants/links.ts';
-import { userFieldConfigs } from '@shared/constants/userFields.ts';
 import type { UserType } from '@shared/types/usersType.ts';
 import { saveUserToStorage } from '@shared/utils/saveUserToStorage.ts';
 import { selectCurrentUser } from '@store/selectors/users.ts';

@@ -23,7 +23,7 @@ import {
 } from '@store/slices/posts/postsSlice.ts';
 import { useAppDispatch } from '@store/store.ts';
 
-import { Comments } from '../../comments/Comments.tsx';
+import { Comments } from '../../comments/components/Comments.tsx';
 
 const actionsMap = {
   favorite: toggleFavorite,
